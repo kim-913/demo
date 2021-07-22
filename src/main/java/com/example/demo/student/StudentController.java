@@ -14,9 +14,9 @@ import java.util.List;
 public class StudentController {
 
     //create API end points
-    @RequestMapping("/api/v1/students")
+    @RequestMapping(path = "/api/v1/students")
     @GetMapping
-    public List<Student> getAllStudents(){
+    public List<Student> getAllStudents() {
         List<Student> students = Arrays.asList(
                 new Student(1L,
                         "Kim",

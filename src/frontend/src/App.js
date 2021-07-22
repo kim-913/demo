@@ -10,7 +10,7 @@ import {
     Layout,
     Menu,
     Breadcrumb,
-    Table
+    Table, Spin, Empty
 } from 'antd';
 import {
     DesktopOutlined,
@@ -18,6 +18,7 @@ import {
     FileOutlined,
     TeamOutlined,
     UserOutlined,
+    LoadingOutlined,
 } from '@ant-design/icons';
 
 import './App.css';
@@ -27,7 +28,7 @@ const {SubMenu} = Menu;
 
 const columns = [
     {
-        title: 'Id',
+        title: 'ID',
         dataIndex: 'id',
         key: 'id',
     },
@@ -48,10 +49,12 @@ const columns = [
     }
 ];
 
+const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+
 function App() {
     const [students, setStudents] = useState([]);
     const [collapsed, setCollapsed] = useState(false);
-
+    const [fetching, setFetching] = useState(true);
     const fetchStudents = () =>
         // only run it once
         getAllStudents()
@@ -61,6 +64,7 @@ function App() {
             .then(data => {
                 console.log(data);
                 setStudents(data);
+                setFetching(false);
             })
 
     useEffect(() => {
@@ -88,12 +92,19 @@ function App() {
 
     // already have students coming from the variable above
     const renderStudents = () => {
+        if (fetching){
+            return <Spin indicator={antIcon} />
+        }
         if (students.length <= 0) {
-            return "No student available.";
+            return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
         }
         return <Table
             dataSource={students}
-            columns={columns}/>
+            columns={columns}
+            bordered
+            title={() => 'STUDENTS'}
+            pagination={{ pageSize: 50 }} scroll={{ y: 240 }}
+        rowKey = {(student) => student.id}/>
     }
     return <Layout style={{minHeight: '100vh'}}>
         <Sider collapsible collapsed={collapsed}

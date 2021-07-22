@@ -9,6 +9,7 @@ import lombok.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 //@AllArgsConstructor
+
 public class Student {
     public Student(Long id, String name, String email, Gender gender) {
         this.id = id;
