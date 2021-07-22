@@ -10,7 +10,7 @@ import java.util.List;
 //expose resources clients can consumer
 @RestController
 
-//@RequestMapping(path = "api/v1/students  ")
+//@RequestMapping(path = "api/v1/students")
 public class StudentController {
 
     //create API end points
