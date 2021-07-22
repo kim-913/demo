@@ -8,8 +8,15 @@ import lombok.*;
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor
 public class Student {
+    public Student(Long id, String name, String email, Gender gender) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.gender = gender;
+    }
+
     private Long id;
     private String name;
     private String email;

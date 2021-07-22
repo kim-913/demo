@@ -22,12 +22,11 @@ public class StudentController {
                         "Kim",
                         "kziruo@gmail.com",
                         Gender.MALE),
-                new Student(1L,
+                new Student(2L,
                         "Tracy",
                         "tracy@gmail.com",
                         Gender.FEMALE)
         );
         return students;
     }
-
 }
