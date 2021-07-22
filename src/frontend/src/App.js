@@ -3,15 +3,30 @@
 //     Radio
 // }
 //     from "antd";
+import { useState, useEffect} from "react";
 import {getAllStudents} from "./client";
 
 import './App.css';
 
 function App() {
-    getAllStudents()
-        // take the data we wrote
-        .then(res => res.json())
-        .then(console.log)
+    const[students, setStudents] = useState([]);
+    const fetchStudents = () =>
+        // only run it once
+        getAllStudents()
+            // take the data we wrote
+            .then(res => res.json())
+            // contains data from backend
+            .then(data => {
+                console.log(data);
+                setStudents(data);
+            })
+
+    useEffect(()=> {
+        console.log("Component is mounted");
+        fetchStudents();
+    }, [])
+
+
     // return (
     //     <div className="App">
     //         <Button type='primary'> Hello</Button>
@@ -23,7 +38,7 @@ function App() {
     //         </Radio.Group>
     //     </div>
     // );
-    return "Hello React";
+    return <p>{students.length}</p>;
 }
 
 export default App;
