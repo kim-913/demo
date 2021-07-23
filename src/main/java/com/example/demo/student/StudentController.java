@@ -14,12 +14,13 @@ import java.util.List;
 //@RequestMapping(path = "api/v1/students")
 public class StudentController {
     private final StudentService studentService;
+    private Object Student;
 
     //create API end points
     @RequestMapping(path = "/api/v1/students")
     @GetMapping
     public List<Student> getAllStudents() {
-        // List<Student> students = Arrays.asList(
+        // return List<Student> students = Arrays.asList(
         //         new Student(1L,
         //                 "Kim",
         //                 "kziruo@gmail.com",

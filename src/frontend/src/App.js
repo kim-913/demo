@@ -103,7 +103,7 @@ function App() {
             columns={columns}
             bordered
             title={() => 'STUDENTS'}
-            pagination={{ pageSize: 50 }} scroll={{ y: 240 }}
+            pagination={{ pageSize: 50 }} scroll={{ y: 400 }}
         rowKey = {(student) => student.id}/>
     }
     return <Layout style={{minHeight: '100vh'}}>
