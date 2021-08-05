@@ -1,17 +1,15 @@
-// import {
-//     Button,
-//     Radio
-// }
-//     from "antd";
-
-import {useState, useEffect} from "react";
+import {useState, useEffect} from 'react'
 import {getAllStudents} from "./client";
 import {
     Layout,
     Menu,
     Breadcrumb,
-    Table, Spin, Empty
+    Table,
+    Spin,
+    Empty,
+    Button,
 } from 'antd';
+
 import {
     DesktopOutlined,
     PieChartOutlined,
@@ -19,7 +17,9 @@ import {
     TeamOutlined,
     UserOutlined,
     LoadingOutlined,
+    PlusOutlined
 } from '@ant-design/icons';
+import StudentDrawerForm from "./StudentDrawerForm";
 
 import './App.css';
 
@@ -28,7 +28,7 @@ const {SubMenu} = Menu;
 
 const columns = [
     {
-        title: 'ID',
+        title: 'Id',
         dataIndex: 'id',
         key: 'id',
     },
@@ -46,21 +46,20 @@ const columns = [
         title: 'Gender',
         dataIndex: 'gender',
         key: 'gender',
-    }
+    },
 ];
 
-const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+const antIcon = <LoadingOutlined style={{fontSize: 24}} spin/>;
 
 function App() {
     const [students, setStudents] = useState([]);
     const [collapsed, setCollapsed] = useState(false);
     const [fetching, setFetching] = useState(true);
+    const [showDrawer, setShowDrawer] = useState(false);
+
     const fetchStudents = () =>
-        // only run it once
         getAllStudents()
-            // take the data we wrote
             .then(res => res.json())
-            // contains data from backend
             .then(data => {
                 console.log(data);
                 setStudents(data);
@@ -68,44 +67,42 @@ function App() {
             })
 
     useEffect(() => {
-        console.log("Component is mounted");
+        console.log("component is mounted");
         fetchStudents();
-    }, [])
+    }, []);
 
-
-    // return (
-    //     <div className="App">
-    //         <Button type='primary'> Hello</Button>
-    //         <br></br>
-    //         <Radio.Group value='large'>
-    //             <Radio.Button value="large">Large</Radio.Button>
-    //             <Radio.Button value="default">Default</Radio.Button>
-    //             <Radio.Button value="small">Small</Radio.Button>
-    //         </Radio.Group>
-    //     </div>
-    // );
-
-    // error handling if no students
-    // if (students.length <= 0) {
-    //     return "No student.";
-    // }
-
-    // already have students coming from the variable above
     const renderStudents = () => {
-        if (fetching){
-            return <Spin indicator={antIcon} />
+        if (fetching) {
+            return <Spin indicator={antIcon}/>
         }
         if (students.length <= 0) {
-            return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
+            return <Empty/>;
         }
-        return <Table
-            dataSource={students}
-            columns={columns}
-            bordered
-            title={() => 'STUDENTS'}
-            pagination={{ pageSize: 50 }} scroll={{ y: 400 }}
-        rowKey = {(student) => student.id}/>
+        return <>
+            <StudentDrawerForm
+                showDrawer={showDrawer}
+                setShowDrawer={setShowDrawer}
+                fetchStudents = {fetchStudents}
+            />
+            <Table
+                dataSource={students}
+                columns={columns}
+                bordered
+                title={() =>
+                    <Button
+                        onClick={() => setShowDrawer(!showDrawer)}
+                        type="primary" shape="round" icon={<PlusOutlined/>} size="small">
+                        Add New Student
+                    </Button>
+                }
+                pagination={{pageSize: 50}}
+                scroll={{y: 500}}
+                rowKey={student => student.id}
+            />
+        </>
+
     }
+
     return <Layout style={{minHeight: '100vh'}}>
         <Sider collapsible collapsed={collapsed}
                onCollapse={setCollapsed}>
@@ -142,12 +139,9 @@ function App() {
                     {renderStudents()}
                 </div>
             </Content>
-            <Footer style={{textAlign: 'center'}}>KimKe ©2021 Created by Ant UED</Footer>
+            <Footer style={{textAlign: 'center'}}>By KimKe</Footer>
         </Layout>
     </Layout>
-    // return students.map((student, index) => {
-    //     return <p key={index}>{student.id} {student.name}</p>
-    // });
 }
 
 export default App;
