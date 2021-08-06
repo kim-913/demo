@@ -17,5 +17,12 @@ public class StudentService {
     public void addStudent(Student student) {
         // no validation
         // check if email is taken, if it is, throw error
+        // debugging, test why doesn't adding work
+        //System.out.print(student);
+        studentRepository.save(student);
+    }
+
+    public void deleteStudent(Long studentId) {
+        studentRepository.deleteById(studentId);
     }
 }
