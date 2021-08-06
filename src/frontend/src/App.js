@@ -42,10 +42,24 @@ const TheAvatar = ({name}) => {
 }
 
 const removeStudent = (studentId, callback) => {
+    // do a unit test here
+    // deleteStudent(8989989898).then(() => {
+    //     successNotification( "Student deleted", `Student with ${studentId} was deleted`);
+    //     callback();
     deleteStudent(studentId).then(() => {
         successNotification( "Student deleted", `Student with ${studentId} was deleted`);
         callback();
-    });
+    }).catch(err => {
+        console.log(err.response)
+        err.response.json().then(res => {
+            console.log(res);
+            errorNotification(
+                "There was an issue!",
+                `${res.message}[statusCode:${res.status}] [${res.error}]`
+            )
+
+        });
+    })
 }
 
 const columns =fetchStudents => [
@@ -113,7 +127,7 @@ function App() {
                 err.response.json().then(res => {
                     console.log(res);
                     errorNotification(
-                        "There was an issue",
+                        "There was an issue!",
                         `${res.message}[statusCode:${res.status}] [${res.error}]`
                     )
 
@@ -130,7 +144,19 @@ function App() {
             return <Spin indicator={antIcon}/>
         }
         if (students.length <= 0) {
-            return <Empty/>;
+            return <>
+                <Button
+                    onClick={() => setShowDrawer(!showDrawer)}
+                    type="primary" shape="round" icon={<PlusOutlined/>} size="small">
+                    Add New Student
+                </Button>
+                <StudentDrawerForm
+                    showDrawer={showDrawer}
+                    setShowDrawer={setShowDrawer}
+                    fetchStudents={fetchStudents}
+                />
+                <Empty/>
+            </>
         }
         return <>
             <StudentDrawerForm
@@ -168,7 +194,7 @@ function App() {
             <div className="logo"/>
             <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
                 <Menu.Item key="1" icon={<PieChartOutlined/>}>
-                    Option 1
+                    Student Main Page
                 </Menu.Item>
                 <Menu.Item key="2" icon={<DesktopOutlined/>}>
                     Option 2
